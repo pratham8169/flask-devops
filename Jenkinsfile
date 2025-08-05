@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "prathams123/flask-devops"
+        DOCKER_IMAGE = "${DOCKERHUB}/flask-devops"
     }
 
     stages {
@@ -22,9 +22,11 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                withDockerRegistry(credentialsId: 'docker-hub-creds') {
-                    dockerImage.push("${BUILD_NUMBER}")
-                    dockerImage.push("latest")
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-creds') {
+                        dockerImage.push("${BUILD_NUMBER}")
+                        dockerImage.push("latest")
+                    }
                 }
             }
         }
@@ -37,3 +39,4 @@ pipeline {
         }
     }
 }
+
