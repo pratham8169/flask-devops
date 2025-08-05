@@ -2,16 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "${DOCKERHUB}/flask-devops"
+        DOCKER_IMAGE = "your-dockerhub-username/flask-devops"
     }
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                git credentialsId: 'github-creds', url: 'https://github.com/pratham8169/flask-devops.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
@@ -39,4 +33,3 @@ pipeline {
         }
     }
 }
-
